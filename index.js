@@ -40,7 +40,6 @@ async function fetchData() {
       coinsTableEl.appendChild(coinCardEl);
     });
 
-    // console.log(findLogoOfCoin);
     filteredTrades.map((trade) => {
       const tradeCard = document.createElement("div");
       tradeCard.innerHTML = `
