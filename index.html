@@ -10,20 +10,28 @@
   <body>
     <div>
       <h1 class="coinsList">Coins List</h1>
-      <div class="showCoins" id="CoinsTable">
-        <!-- <div class="coinCard">
-          <div class="coinName">name</div>
+      <div class="showCoins" id="CoinsTable"></div>
+    </div>
 
-          <div class="coinLogo">
-            <img class="logoPic" src="" alt="Coin Logo" />
-          </div>
-        </div>
+    <div id="TradeTable">
+      <h1 class="tradeList">Trade</h1>
+      <div class="pairCards">
+        <!-- <div class="pairCard">
+          <div class="pairName">{{ pair.name }}</div>
+          <div class="tradeCard">
+            <div class="pairOne">
+              <img class="coinLogo" :src="pairOneLogo" alt="logo" />
+              <p>{{ pair.pair_base }}</p>
+            </div>
 
-        <div class="coinCard">
-          <div class="coinName">name</div>
+            <div class="pairTwo">
+              <img class="coinLogo" :src="pairTwoLogo" alt="logo" />
 
-          <div class="coinLogo">
-            <img class="logoPic" src="" alt="Coin Logo" />
+              <p>{{ pair.pair_2 }}</p>
+            </div>
+
+            <div class="pairPrice">{{ pair.min_price }}$</div>
+            <div class="pairPrice">{{ pair.max_price }}$</div>
           </div>
         </div> -->
       </div>
