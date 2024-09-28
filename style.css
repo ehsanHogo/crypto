@@ -1,0 +1,56 @@
+/* generell */
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+
+  background-color: #e9e6e681;
+  padding: 3rem;
+}
+
+/* specific */
+
+.coinCard {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(127, 197, 255);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+}
+
+.coinName {
+  width: 50%;
+}
+
+.coinLogo {
+  width: 50%;
+
+  display: flex;
+  justify-content: end;
+}
+
+.logoPic {
+  width: 25%;
+}
+
+.showCoins {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-width: 50%;
+  gap: 1rem;
+}
+
+.coinsList {
+  padding-bottom: 1rem;
+  text-align: center;
+}
