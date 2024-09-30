@@ -1,3 +1,4 @@
+// Show coins and trades
 const coinsTableEl = document.getElementById("CoinsTable");
 
 const tradeTableEl = document.getElementById("TradeTable");
@@ -20,8 +21,8 @@ async function fetchData() {
     filteredCoins = Object.entries(data.coins).slice(0, 30);
     filteredTrades = Object.values(data.pairs).slice(0, 30);
 
-    console.log(filteredCoins);
-    console.log(filteredTrades);
+    // console.log(filteredCoins);
+    // console.log(filteredTrades);
 
     fetchedData.map((coin) => {
       findLogoOfCoin.set(coin[0], coin[1].logo);
@@ -75,3 +76,16 @@ async function fetchData() {
 }
 
 fetchData();
+//Show Chart for trade
+
+async function fetchTradeChart() {
+  const res = await fetch(
+    "https://api.exir.io/v2/chart?symbol=btc-usdt&resolution=1D&from=1616987453&to=1619579513"
+  );
+
+  const data = await res.json();
+
+  console.log(data);
+}
+
+fetchTradeChart();
