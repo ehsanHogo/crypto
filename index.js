@@ -9,9 +9,7 @@ let filteredCoins = [];
 
 let filteredTrades = [];
 
-let findLogoOfCoin = new Map();
-
-let chartOpen = false;
+let logoOfCoins = new Map();
 
 async function fetchData() {
   try {
@@ -24,7 +22,7 @@ async function fetchData() {
     filteredTrades = Object.values(data.pairs).slice(0, 30);
 
     fetchedData.map((coin) => {
-      findLogoOfCoin.set(coin[0], coin[1].logo);
+      logoOfCoins.set(coin[0], coin[1].logo);
     });
 
     filteredCoins.map((coin) => {
@@ -52,14 +50,14 @@ async function fetchData() {
           <div class="pairName">${trade.name}</div>
           <div class="tradeCard">
             <div class="pairOne">
-              <img class="coinLogo" src="${findLogoOfCoin.get(
+              <img class="coinLogo" src="${logoOfCoins.get(
                 trade.pair_base
               )}" alt="logo" />
               <p>${trade.pair_base}</p>
             </div>
 
             <div class="pairTwo">
-              <img class="coinLogo" src="${findLogoOfCoin.get(
+              <img class="coinLogo" src="${logoOfCoins.get(
                 trade.pair_2
               )}" alt="logo" />
 
