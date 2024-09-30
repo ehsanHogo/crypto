@@ -82,6 +82,7 @@ body {
 .tradeButtom {
   background-color: inherit;
   border: none;
+  width: inherit;
 }
 .pairOne {
   display: flex;
