@@ -80,15 +80,33 @@ fetchData();
 
 async function fetchTradeChart() {
   const res = await fetch(
-    "https://api.exir.io/v2/chart?symbol=btc-usdt&resolution=1D&from=1616987453&to=1619579513"
+    "https://api.exir.io/v2/chart?symbol=btc-usdt&resolution=1D&from=1711917000&to=1714509000"
   );
 
   if (!res.ok) {
     throw new Error("http request faild");
   } else {
     const data = await res.json();
-    const cahrtData = data.map((item) => {
-      //  return { x: item ,,y: item.volume}
+    const chartData = data.map((item) => {
+      return { x: moment(item.time).format("D"), y: item.volume };
+
+      // 2024-04-01T00:00:00.000Z/
+      // console.log(moment(item.time).format("D"));
+      // console.log(moment(item.time).toObject());
+    });
+
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        datasets: [
+          {
+            pointRadius: 4,
+            pointBackgroundColor: "rgba(0,0,255,1)",
+            data: chartData,
+          },
+        ],
+      },
+      options: {},
     });
 
     console.log(data);
@@ -110,19 +128,3 @@ const xyValues = [
   { x: 140, y: 14 },
   { x: 150, y: 15 },
 ];
-
-new Chart("myChart", {
-  type: "scatter",
-  data: {
-    datasets: [
-      {
-        pointRadius: 4,
-        pointBackgroundColor: "rgba(0,0,255,1)",
-        data: xyValues,
-      },
-    ],
-  },
-  options: {},
-});
-
-console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
