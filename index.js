@@ -118,7 +118,7 @@ async function fetchTradeChart(tradePair, tradeID) {
           {
             label: `${tradePair}`,
 
-            pointRadius: 4,
+            pointRadius: 2,
             pointBackgroundColor: "rgba(0,0,255,1)",
             data: chartData,
           },
