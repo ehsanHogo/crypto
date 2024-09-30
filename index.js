@@ -11,6 +11,8 @@ let filteredTrades = [];
 
 let findLogoOfCoin = new Map();
 
+let chartOpen = false;
+
 async function fetchData() {
   try {
     const response = await fetch("https://api.exir.io/v2/constants");
@@ -20,9 +22,6 @@ async function fetchData() {
     fetchedData = Object.entries(data.coins);
     filteredCoins = Object.entries(data.coins).slice(0, 30);
     filteredTrades = Object.values(data.pairs).slice(0, 30);
-
-    // console.log(filteredCoins);
-    // console.log(filteredTrades);
 
     fetchedData.map((coin) => {
       findLogoOfCoin.set(coin[0], coin[1].logo);
@@ -42,9 +41,14 @@ async function fetchData() {
     });
 
     filteredTrades.map((trade) => {
-      const tradeCard = document.createElement("div");
-      tradeCard.innerHTML = `
-                <div class="pairCard">
+      const tradeCardEl = document.createElement("div");
+      tradeCardEl.classList.add("pairCard");
+      tradeCardEl.setAttribute("hideChart", "");
+
+      tradeCardEl.innerHTML = `
+        <button class="tradeButtom" key="${trade.id}" name=         "tradeCard${
+        trade.id
+      }">
           <div class="pairName">${trade.name}</div>
           <div class="tradeCard">
             <div class="pairOne">
@@ -65,10 +69,27 @@ async function fetchData() {
             <div class="pairPrice">${trade.min_price}$</div>
             <div class="pairPrice">${trade.max_price}$</div>
           </div>
-        </div>
+        </button>
         `;
 
-      tradeTableEl.appendChild(tradeCard);
+      tradeCardEl.addEventListener("click", () => {
+        if (tradeCardEl.hasAttribute("hideChart")) {
+          fetchTradeChart(`${trade.name}`, trade.id);
+          const chartEl = document.createElement("div");
+          chartEl.classList.add("chartCard");
+          chartEl.setAttribute("id", "TradeChart");
+          chartEl.innerHTML = `    <canvas id="myChart${trade.id}" style="width: 100%; max-width: 700px"></canvas>`;
+
+          tradeCardEl.appendChild(chartEl);
+          tradeCardEl.removeAttribute("hideChart");
+        } else {
+          const chartEl = document.getElementById("TradeChart");
+          chartEl.remove();
+          tradeCardEl.setAttribute("hideChart", "");
+        }
+      });
+
+      tradeTableEl.appendChild(tradeCardEl);
     });
   } catch (e) {
     console.log(e);
@@ -78,9 +99,9 @@ async function fetchData() {
 fetchData();
 //Show Chart for trade
 
-async function fetchTradeChart() {
+async function fetchTradeChart(tradePair, tradeID) {
   const res = await fetch(
-    "https://api.exir.io/v2/chart?symbol=btc-usdt&resolution=1D&from=1711917000&to=1714509000"
+    `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
   );
 
   if (!res.ok) {
@@ -88,22 +109,17 @@ async function fetchTradeChart() {
   } else {
     const data = await res.json();
     const xLables = [...Array(32).keys()].slice(1);
-    // console.log(xLables);
     const chartData = data.map((item) => {
       return { x: moment(item.time).format("D"), y: item.volume };
-
-      // 2024-04-01T00:00:00.000Z/
-      console.log(moment(item.time).format("D"));
-      // console.log(moment(item.time).toObject());
     });
 
-    new Chart("myChart", {
+    new Chart(`myChart${tradeID}`, {
       type: "line",
       data: {
         labels: xLables,
         datasets: [
           {
-            label: "btc-usdt",
+            label: `${tradePair}`,
 
             pointRadius: 4,
             pointBackgroundColor: "rgba(0,0,255,1)",
@@ -114,8 +130,6 @@ async function fetchTradeChart() {
       options: {},
     });
 
-    console.log(data);
+    // console.log(data);
   }
 }
-
-fetchTradeChart();

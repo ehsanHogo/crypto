@@ -59,13 +59,17 @@ body {
 /* Show Trades */
 
 .pairCard {
-  background-color: aquamarine;
+  background-color: rgb(127, 197, 255);
 
   padding: 1.5rem;
 
   border-radius: 20px;
 
   margin: 1rem;
+  /* border-width: 0px; */
+  /* border: none; */
+
+  /* box-shadow: green; */
 }
 .tradeCard {
   display: flex;
@@ -73,6 +77,11 @@ body {
   margin: 0.5rem;
 
   gap: 10rem;
+}
+
+.tradeButtom {
+  background-color: inherit;
+  border: none;
 }
 .pairOne {
   display: flex;
@@ -118,6 +127,9 @@ body {
 
 .chartCard {
   /* width: auto; */
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 @media only screen and (max-width: 768px) {
