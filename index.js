@@ -83,9 +83,46 @@ async function fetchTradeChart() {
     "https://api.exir.io/v2/chart?symbol=btc-usdt&resolution=1D&from=1616987453&to=1619579513"
   );
 
-  const data = await res.json();
+  if (!res.ok) {
+    throw new Error("http request faild");
+  } else {
+    const data = await res.json();
+    const cahrtData = data.map((item) => {
+      //  return { x: item ,,y: item.volume}
+    });
 
-  console.log(data);
+    console.log(data);
+  }
 }
 
 fetchTradeChart();
+
+const xyValues = [
+  { x: 50, y: 7 },
+  { x: 60, y: 8 },
+  { x: 70, y: 8 },
+  { x: 80, y: 9 },
+  { x: 90, y: 9 },
+  { x: 100, y: 9 },
+  { x: 110, y: 10 },
+  { x: 120, y: 11 },
+  { x: 130, y: 14 },
+  { x: 140, y: 14 },
+  { x: 150, y: 15 },
+];
+
+new Chart("myChart", {
+  type: "scatter",
+  data: {
+    datasets: [
+      {
+        pointRadius: 4,
+        pointBackgroundColor: "rgba(0,0,255,1)",
+        data: xyValues,
+      },
+    ],
+  },
+  options: {},
+});
+
+console.log(moment().format("MMMM Do YYYY, h:mm:ss a"));
