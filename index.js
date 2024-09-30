@@ -68,13 +68,13 @@ async function fetchData() {
           fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
           const chartEl = document.createElement("div");
           chartEl.classList.add("chartCard");
-          chartEl.setAttribute("id", "TradeChart");
+          chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
           chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
 
           tradeCardEl.appendChild(chartEl);
           tradeCardEl.removeAttribute("hideChart");
         } else {
-          const chartEl = document.getElementById("TradeChart");
+          const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
           chartEl.remove();
           tradeCardEl.setAttribute("hideChart", "");
         }
