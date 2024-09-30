@@ -1,17 +1,13 @@
 // Show coins and trades
-const coinsTableEl = document.getElementById("CoinsTable");
-
-const tradeTableEl = document.getElementById("TradeTable");
-
-let fetchedData = [];
-
-let filteredCoins = [];
-
-let filteredTrades = [];
-
-let logoOfCoins = new Map();
 
 async function fetchData() {
+  const coinsTableEl = document.getElementById("CoinsTable");
+  const tradeTableEl = document.getElementById("TradeTable");
+  let logoOfCoins = new Map();
+  let filteredTrades = [];
+  let filteredCoins = [];
+  let fetchedData = [];
+
   try {
     const response = await fetch("https://api.exir.io/v2/constants");
 
@@ -21,24 +17,25 @@ async function fetchData() {
     filteredCoins = Object.entries(data.coins).slice(0, 30);
     filteredTrades = Object.values(data.pairs).slice(0, 30);
 
-    fetchedData.map((coin) => {
+    fetchedData.forEach((coin) => {
       logoOfCoins.set(coin[0], coin[1].logo);
     });
 
-    filteredCoins.map((coin) => {
+    filteredCoins.forEach((coin) => {
       const coinCardEl = document.createElement("div");
+      const coinValue = coin[1];
       coinCardEl.innerHTML = `     
          <div class="coinCard">
-          <div class="coinName">${coin[1].fullname}</div>
+          <div class="coinName">${coinValue.fullname}</div>
           <div class="coinLogo">
-            <img class="logoPic" src="${coin[1].logo}" alt="${coin[1].fullname}" />
+            <img class="logoPic" src="${coinValue.logo}" alt="${coinValue.fullname}" />
           </div>
         </div>`;
 
       coinsTableEl.appendChild(coinCardEl);
     });
 
-    filteredTrades.map((trade) => {
+    filteredTrades.forEach((trade) => {
       const tradeCardEl = document.createElement("div");
       tradeCardEl.classList.add("pairCard");
       tradeCardEl.setAttribute("hideChart", "");
@@ -107,7 +104,7 @@ async function fetchTradeChart(tradePair, tradeID) {
   } else {
     const data = await res.json();
     const xLables = [...Array(32).keys()].slice(1);
-    const chartData = data.map((item) => {
+    const chartData = datafilteredTrades.forEach((item) => {
       return { x: moment(item.time).format("D"), y: item.volume };
     });
 
