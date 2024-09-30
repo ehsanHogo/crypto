@@ -3,27 +3,23 @@
 async function fetchData() {
   const coinsTableEl = document.getElementById("CoinsTable");
   const tradeTableEl = document.getElementById("TradeTable");
-  let logoOfCoins = new Map();
+
   let filteredTrades = [];
   let filteredCoins = [];
-  let fetchedData = [];
 
   try {
     const response = await fetch("https://api.exir.io/v2/constants");
 
     const data = await response.json();
 
-    fetchedData = Object.entries(data.coins);
-    filteredCoins = Object.entries(data.coins).slice(0, 30);
-    filteredTrades = Object.values(data.pairs).slice(0, 30);
+    filteredCoins = Object.fromEntries(Object.entries(data.coins).slice(0, 30));
+    filteredTrades = Object.fromEntries(
+      Object.entries(data.pairs).slice(0, 30)
+    );
 
-    fetchedData.forEach((coin) => {
-      logoOfCoins.set(coin[0], coin[1].logo);
-    });
-
-    filteredCoins.forEach((coin) => {
+    for (const coin in filteredCoins) {
       const coinCardEl = document.createElement("div");
-      const coinValue = coin[1];
+      const coinValue = filteredCoins[coin];
       coinCardEl.innerHTML = `     
          <div class="coinCard">
           <div class="coinName">${coinValue.fullname}</div>
@@ -33,47 +29,47 @@ async function fetchData() {
         </div>`;
 
       coinsTableEl.appendChild(coinCardEl);
-    });
+    }
 
-    filteredTrades.forEach((trade) => {
+    for (const trade in filteredTrades) {
       const tradeCardEl = document.createElement("div");
       tradeCardEl.classList.add("pairCard");
       tradeCardEl.setAttribute("hideChart", "");
 
+      const tradeValue = filteredTrades[trade];
+      const { logo1, logo2 } = findLogo(
+        data,
+        tradeValue.name.split("-")[0],
+        tradeValue.name.split("-")[1]
+      );
       tradeCardEl.innerHTML = `
-        <button class="tradeButtom" key="${trade.id}" name=         "tradeCard${
-        trade.id
-      }">
-          <div class="pairName">${trade.name}</div>
+        <button class="tradeButtom" key="${tradeValue.id}" name=         "tradeCard${tradeValue.id}">
+          <div class="pairName">${tradeValue.name}</div>
           <div class="tradeCard">
             <div class="pairOne">
-              <img class="coinLogo" src="${logoOfCoins.get(
-                trade.pair_base
-              )}" alt="logo" />
-              <p>${trade.pair_base}</p>
+              <img class="coinLogo" src="${logo1}" alt="logo" />
+              <p>${tradeValue.pair_base}</p>
             </div>
 
             <div class="pairTwo">
-              <img class="coinLogo" src="${logoOfCoins.get(
-                trade.pair_2
-              )}" alt="logo" />
+              <img class="coinLogo" src="${logo2}" alt="logo" />
 
-              <p>${trade.pair_2}</p>
+              <p>${tradeValue.pair_2}</p>
             </div>
 
-            <div class="pairPrice">${trade.min_price}$</div>
-            <div class="pairPrice">${trade.max_price}$</div>
+            <div class="pairPrice">${tradeValue.min_price}$</div>
+            <div class="pairPrice">${tradeValue.max_price}$</div>
           </div>
         </button>
         `;
 
       tradeCardEl.addEventListener("click", () => {
         if (tradeCardEl.hasAttribute("hideChart")) {
-          fetchTradeChart(`${trade.name}`, trade.id);
+          fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
           const chartEl = document.createElement("div");
           chartEl.classList.add("chartCard");
           chartEl.setAttribute("id", "TradeChart");
-          chartEl.innerHTML = `    <canvas id="myChart${trade.id}" style="width: 100%; max-width: 700px"></canvas>`;
+          chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
 
           tradeCardEl.appendChild(chartEl);
           tradeCardEl.removeAttribute("hideChart");
@@ -85,7 +81,7 @@ async function fetchData() {
       });
 
       tradeTableEl.appendChild(tradeCardEl);
-    });
+    }
   } catch (e) {
     console.log(e);
   }
@@ -104,7 +100,7 @@ async function fetchTradeChart(tradePair, tradeID) {
   } else {
     const data = await res.json();
     const xLables = [...Array(32).keys()].slice(1);
-    const chartData = datafilteredTrades.forEach((item) => {
+    const chartData = data.map((item) => {
       return { x: moment(item.time).format("D"), y: item.volume };
     });
 
@@ -127,4 +123,19 @@ async function fetchTradeChart(tradePair, tradeID) {
 
     // console.log(data);
   }
+}
+
+function findLogo(data, pair1, pair2) {
+  let logo1 = null;
+  let logo2 = null;
+  for (const item in data["coins"]) {
+    if (!item.localeCompare(pair1)) {
+      logo1 = data["coins"][item].logo;
+    }
+    if (!item.localeCompare(pair2)) {
+      logo2 = data["coins"][item].logo;
+    }
+  }
+
+  return { logo1, logo2 };
 }
