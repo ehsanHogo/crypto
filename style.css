@@ -75,8 +75,9 @@ body {
   display: flex;
 
   margin: 0.5rem;
+  /* justify-content: center; */
 
-  gap: 10rem;
+  gap: 8rem;
 }
 
 .tradeButtom {
@@ -84,22 +85,38 @@ body {
   border: none;
   width: inherit;
 }
+
+.pricesPart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.coinsPart {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  gap: 5rem;
+}
+
+.priceReport {
+  text-wrap: nowrap;
+}
 .pairOne {
   display: flex;
-  width: 25%;
+  /* width: 25%; */
   align-items: center;
   gap: 1rem;
 }
 
 .pairTwo {
-  width: 25%;
+  /* width: 25%; */
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
 .pairPrice {
-  width: 50%;
+  width: 25%;
 
   display: flex;
   justify-content: start;
@@ -113,7 +130,7 @@ body {
 }
 
 .coinLogo {
-  width: 50%;
+  max-width: 200px;
 
   display: flex;
   justify-content: end;
@@ -133,11 +150,69 @@ body {
   margin-top: 2rem;
 }
 
-@media only screen and (max-width: 768px) {
+@media screen and (min-width: 200px) {
+  .showCoins {
+    display: flex;
+    flex-direction: column;
+    /* grid-template-columns: 1fr 1fr;
+    column-width: 50%; */
+    gap: 1rem;
+  }
+
+  .tradeCard {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .coinLogo {
+    /* display: block; */
+    min-width: 50px;
+    max-width: 200px;
+    /* justify-content: center; */
+  }
+
+  .coinsPart {
+    width: initial;
+    gap: 1rem;
+  }
+  .pairPrice {
+    width: initial;
+  }
+}
+
+@media screen and (min-width: 660px) {
   .showCoins {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-width: 50%;
     gap: 1rem;
+  }
+
+  .tradeCard {
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem;
+
+    gap: 3rem;
+  }
+}
+
+@media screen and (min-width: 880px) {
+  .showCoins {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-width: 50%;
+    gap: 1rem;
+  }
+
+  .tradeCard {
+    display: flex;
+
+    margin: 0.5rem;
+
+    gap: 5rem;
   }
 }

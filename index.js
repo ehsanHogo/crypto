@@ -46,6 +46,8 @@ async function fetchData() {
         <button class="tradeButtom" key="${tradeValue.id}" name=         "tradeCard${tradeValue.id}">
           <div class="pairName">${tradeValue.name}</div>
           <div class="tradeCard">
+
+          <div class = "coinsPart">
             <div class="pairOne">
               <img class="coinLogo" src="${logo1}" alt="logo" />
               <p>${tradeValue.pair_base}</p>
@@ -57,8 +59,10 @@ async function fetchData() {
               <p>${tradeValue.pair_2}</p>
             </div>
 
-            <div class="pairPrice">${tradeValue.min_price}$</div>
-            <div class="pairPrice">${tradeValue.max_price}$</div>
+            </div>
+
+            <div class="pairPrice"><span class = "priceReport">Min Price : </span> ${tradeValue.min_price}$</div>
+            <div class="pairPrice"> <span class = "priceReport">Max Price : </span> ${tradeValue.max_price}$</div>
           </div>
         </button>
         `;
