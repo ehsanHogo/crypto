@@ -87,19 +87,24 @@ async function fetchTradeChart() {
     throw new Error("http request faild");
   } else {
     const data = await res.json();
+    const xLables = [...Array(32).keys()].slice(1);
+    // console.log(xLables);
     const chartData = data.map((item) => {
       return { x: moment(item.time).format("D"), y: item.volume };
 
       // 2024-04-01T00:00:00.000Z/
-      // console.log(moment(item.time).format("D"));
+      console.log(moment(item.time).format("D"));
       // console.log(moment(item.time).toObject());
     });
 
     new Chart("myChart", {
       type: "line",
       data: {
+        labels: xLables,
         datasets: [
           {
+            label: "btc-usdt",
+
             pointRadius: 4,
             pointBackgroundColor: "rgba(0,0,255,1)",
             data: chartData,
@@ -114,17 +119,3 @@ async function fetchTradeChart() {
 }
 
 fetchTradeChart();
-
-const xyValues = [
-  { x: 50, y: 7 },
-  { x: 60, y: 8 },
-  { x: 70, y: 8 },
-  { x: 80, y: 9 },
-  { x: 90, y: 9 },
-  { x: 100, y: 9 },
-  { x: 110, y: 10 },
-  { x: 120, y: 11 },
-  { x: 130, y: 14 },
-  { x: 140, y: 14 },
-  { x: 150, y: 15 },
-];
