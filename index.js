@@ -12,10 +12,12 @@ async function fetchData() {
 
     const data = await response.json();
 
-    filteredCoins = Object.fromEntries(Object.entries(data.coins).slice(0, 30));
-    filteredTrades = Object.fromEntries(
-      Object.entries(data.pairs).slice(0, 30)
-    );
+    // filteredCoins = Object.fromEntries(Object.entries(data.coins).slice(0, 30));
+    filteredCoins = data.coins;
+    // filteredTrades = Object.fromEntries(
+    //   Object.entries(data.pairs).slice(0, 30)
+    // );
+    filteredTrades = data.pairs;
 
     for (const coin in filteredCoins) {
       const coinCardEl = document.createElement("div");
