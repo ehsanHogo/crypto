@@ -30,6 +30,7 @@ body {
 
 .coinName {
   width: 50%;
+  text-wrap: nowrap;
 }
 
 .coinLogo {
@@ -111,4 +112,13 @@ body {
 .tradeList {
   padding: 1rem 0;
   text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .showCoins {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-width: 50%;
+    gap: 1rem;
+  }
 }
