@@ -170,6 +170,18 @@ body {
   gap: 2rem;
 }
 
+/* input */
+
+.showChart--input {
+  /* display: inline; */
+  width: min-content;
+  /* height: 100px; */
+}
+
+.showChart {
+  display: flex;
+  flex-direction: column;
+}
 @media screen and (min-width: 200px) {
   .pairCard {
     display: flex;

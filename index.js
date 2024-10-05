@@ -31,7 +31,8 @@ async function fetchData() {
 fetchData();
 //Show Chart for trade
 
-async function fetchTradeChart(tradePair, tradeID) {
+async function fetchTradeChart(tradePair, tradeID, precision) {
+  // console.log("precision : ", precision);s
   const res = await fetch(
     `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
   );
@@ -40,43 +41,10 @@ async function fetchTradeChart(tradePair, tradeID) {
     throw new Error("http request faild");
   } else {
     const data = await res.json();
-    const xLables = data.map((item) => {
-      return moment(item.time).format("YYYY/MM/DD");
-    });
-    const chartData = data.map((item) => {
-      return { x: moment(item.time).format("D"), y: item.volume };
-    });
+    const xLables = getXaxislables(data, precision);
+    const chartData = getChartData(data, precision);
 
-    new Chart(`myChart${tradeID}`, {
-      type: "line",
-      data: {
-        labels: xLables,
-        datasets: [
-          {
-            label: `${tradePair}`,
-
-            pointRadius: 2,
-            pointBackgroundColor: "rgba(0,0,255,1)",
-            data: chartData,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          xAxes: [
-            {
-              // position: "top",
-              ticks: {
-                padding: 10,
-                // callback: function (value, index, ticks) {
-                //   return "    " + value + "   ";
-                // },
-              },
-            },
-          ],
-        },
-      },
-    });
+    makeChart(tradeID, xLables, tradePair, chartData);
 
     // console.log(data);
   }
@@ -126,9 +94,9 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
       tradeValue.pair_2
     );
 
-    console.log(tradeValue);
+    // console.log(tradeValue);
     tradeCardEl.innerHTML = `
-      <button class="tradeButtom" key="${tradeValue.id}" name=         "tradeCard${tradeValue.id}">
+      <button class="tradeButtom" key="${tradeValue.id}" name="tradeCard${tradeValue.id}">
         <div class="pairName">${tradeValue.name}</div>
         <div class="tradeCard">
 
@@ -160,10 +128,15 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
         const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
         // chartEl.remove();
         if (chartEl) {
-          showChartEl.removeChild(chartEl);
+          showChartEl.removeChild(showChartEl.firstChild);
+          showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.children[0]);
+          // showChartEl.removeChild(showChartEl.children[1]);
           showChartEl.setAttribute("hideChart", "");
         } else {
-          showChartEl.removeChild(showChartEl.children[0]);
+          showChartEl.removeChild(showChartEl.firstChild);
+          showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.children[1]);
           showChart(tradeValue, showChartEl);
         }
       }
@@ -175,11 +148,113 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
 
 function showChart(tradeValue, showChartEl) {
   const chartEl = document.createElement("div");
+  const inputEl = getInputTag(tradeValue);
   chartEl.classList.add("chartCard");
   chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
-  chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
+  chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
 
   showChartEl.appendChild(chartEl);
-  fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
+  showChartEl.appendChild(inputEl);
+
+  fetchTradeChart(`${tradeValue.name}`, tradeValue.id, 1);
   showChartEl.removeAttribute("hideChart");
+}
+
+function getInputTag(tradeValue) {
+  const inputEl = document.createElement("input");
+
+  inputEl.addEventListener("change", (e) => {
+    // console.log(e.target.value);
+    fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value);
+  });
+
+  // inputEl.innerHTML = '<input class = "showChart--input" type= "text" />';
+  inputEl.classList.add("showChart--input");
+
+  return inputEl;
+}
+
+function makeChart(tradeID, xLables, tradePair, chartData) {
+  new Chart(`myChart${tradeID}`, {
+    type: "line",
+    data: {
+      labels: xLables,
+      datasets: [
+        {
+          label: `${tradePair}`,
+
+          pointRadius: 2,
+          pointBackgroundColor: "rgba(0,0,255,1)",
+          data: chartData,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        xAxes: [
+          {
+            // position: "top",
+            ticks: {
+              padding: 10,
+              // callback: function (value, index, ticks) {
+              //   return "    " + value + "   ";
+              // },
+            },
+          },
+        ],
+      },
+    },
+  });
+}
+
+function getXaxislables(data, precision) {
+  return data
+    .filter((item, index) => {
+      return (index + 1) % precision === 0;
+    })
+    .map((item) => {
+      return moment(item.time).format("YYYY/MM/DD");
+    });
+}
+
+function getChartData(data, precision) {
+  console.log(data);
+
+  let tempYvalue = 0;
+  let tempItem;
+  let count = 0;
+  let newData = [];
+
+  console.log(count);
+  console.log(newData);
+  if (precision > 1) {
+    for (let index = 0; index < data.length; index++) {
+      if (count < precision - 1) {
+        tempYvalue += data[index].volume;
+        count++;
+      } else if (count === precision - 1) {
+        // console.log("here");
+        tempYvalue += data[index].volume;
+        newData.push({
+          x: moment(data[index].time).format("YYYY/MM/DD"),
+          y: tempYvalue / precision,
+        });
+
+        count = 0;
+
+        tempYvalue = 0;
+      }
+    }
+  } else {
+    newData = data.map((item) => {
+      return {
+        x: moment(item.time).format("YYYY/MM/DD"),
+        y: item.volume,
+      };
+    });
+  }
+
+  // console.log(newData);
+
+  return newData;
 }
