@@ -16,76 +16,9 @@ async function fetchData() {
 
     filteredTrades = data.pairs;
 
-    for (const coin in filteredCoins) {
-      const coinCardEl = document.createElement("div");
-      const coinValue = filteredCoins[coin];
-      coinCardEl.innerHTML = `     
-         <div class="coinCard">
-          <div class="coinName">${coinValue.fullname}</div>
-          <div class="coinLogo">
-            <img class="logoPic" src="${coinValue.logo}" alt="${coinValue.fullname}" />
-          </div>
-        </div>`;
+    showCoins(filteredCoins, coinsTableEl);
 
-      coinsTableEl.appendChild(coinCardEl);
-    }
-
-    for (const trade in filteredTrades) {
-      const tradeCardEl = document.createElement("div");
-      tradeCardEl.classList.add("pairCard");
-      tradeCardEl.setAttribute("hideChart", "");
-
-      const tradeValue = filteredTrades[trade];
-      const { logo1, logo2 } = findLogo(
-        data,
-        tradeValue.name.split("-")[0],
-        tradeValue.name.split("-")[1]
-      );
-      tradeCardEl.innerHTML = `
-        <button class="tradeButtom" key="${tradeValue.id}" name=         "tradeCard${tradeValue.id}">
-          <div class="pairName">${tradeValue.name}</div>
-          <div class="tradeCard">
-
-          <div class = "coinsPart">
-            <div class="pairOne">
-              <img class="coinLogo" src="${logo1}" alt="logo" />
-              <p>${tradeValue.pair_base}</p>
-            </div>
-
-            <div class="pairTwo">
-              <img class="coinLogo" src="${logo2}" alt="logo" />
-
-              <p>${tradeValue.pair_2}</p>
-            </div>
-
-            </div>
-        <div class  = "pricePart">
-            <div class="pairPrice"><span class = "priceReport">Min Price : </span> ${tradeValue.min_price}$</div>
-            <div class="pairPrice"> <span class = "priceReport">Max Price : </span> ${tradeValue.max_price}$</div>
-          </div>
-            </div>
-        </button>
-        `;
-
-      tradeCardEl.addEventListener("click", () => {
-        if (tradeCardEl.hasAttribute("hideChart")) {
-          fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
-          const chartEl = document.createElement("div");
-          chartEl.classList.add("chartCard");
-          chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
-          chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
-
-          tradeCardEl.appendChild(chartEl);
-          tradeCardEl.removeAttribute("hideChart");
-        } else {
-          const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
-          chartEl.remove();
-          tradeCardEl.setAttribute("hideChart", "");
-        }
-      });
-
-      tradeTableEl.appendChild(tradeCardEl);
-    }
+    showTrades(filteredTrades, tradeTableEl, data);
   } catch (e) {
     console.log(e);
   }
@@ -142,4 +75,79 @@ function findLogo(data, pair1, pair2) {
   }
 
   return { logo1, logo2 };
+}
+
+function showCoins(filteredCoins, coinsTableEl) {
+  for (const coin in filteredCoins) {
+    const coinCardEl = document.createElement("div");
+    const coinValue = filteredCoins[coin];
+    coinCardEl.innerHTML = `     
+       <div class="coinCard">
+        <div class="coinName">${coinValue.fullname}</div>
+        <div class="coinLogo">
+          <img class="logoPic" src="${coinValue.logo}" alt="${coinValue.fullname}" />
+        </div>
+      </div>`;
+
+    coinsTableEl.appendChild(coinCardEl);
+  }
+}
+
+function showTrades(filteredTrades, tradeTableEl, data) {
+  for (const trade in filteredTrades) {
+    const tradeCardEl = document.createElement("div");
+    tradeCardEl.classList.add("pairCard");
+    tradeCardEl.setAttribute("hideChart", "");
+
+    const tradeValue = filteredTrades[trade];
+    const { logo1, logo2 } = findLogo(
+      data,
+      tradeValue.name.split("-")[0],
+      tradeValue.name.split("-")[1]
+    );
+    tradeCardEl.innerHTML = `
+      <button class="tradeButtom" key="${tradeValue.id}" name=         "tradeCard${tradeValue.id}">
+        <div class="pairName">${tradeValue.name}</div>
+        <div class="tradeCard">
+
+        <div class = "coinsPart">
+          <div class="pairOne">
+            <img class="coinLogo" src="${logo1}" alt="logo" />
+            <p>${tradeValue.pair_base}</p>
+          </div>
+
+          <div class="pairTwo">
+            <img class="coinLogo" src="${logo2}" alt="logo" />
+
+            <p>${tradeValue.pair_2}</p>
+          </div>
+
+          </div>
+      <div class  = "pricePart">
+          <div class="pairPrice"><span class = "priceReport">Min Price : </span> ${tradeValue.min_price}$</div>
+          <div class="pairPrice"> <span class = "priceReport">Max Price : </span> ${tradeValue.max_price}$</div>
+        </div>
+          </div>
+      </button>
+      `;
+
+    tradeCardEl.addEventListener("click", () => {
+      if (tradeCardEl.hasAttribute("hideChart")) {
+        fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
+        const chartEl = document.createElement("div");
+        chartEl.classList.add("chartCard");
+        chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
+        chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
+
+        tradeCardEl.appendChild(chartEl);
+        tradeCardEl.removeAttribute("hideChart");
+      } else {
+        const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
+        chartEl.remove();
+        tradeCardEl.setAttribute("hideChart", "");
+      }
+    });
+
+    tradeTableEl.appendChild(tradeCardEl);
+  }
 }
