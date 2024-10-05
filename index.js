@@ -140,14 +140,25 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
         const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
         // chartEl.remove();
         if (chartEl) {
-          showChartEl.removeChild(showChartEl.firstChild);
-          showChartEl.removeChild(showChartEl.firstChild);
+          showChartEl.removeChild(showChartEl.children[0]);
+          showChartEl.removeChild(showChartEl.children[0]);
+          showChartEl.removeChild(showChartEl.children[0]);
+          // showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.firstChild);
           // showChartEl.removeChild(showChartEl.children[0]);
           // showChartEl.removeChild(showChartEl.children[1]);
           showChartEl.setAttribute("hideChart", "");
         } else {
-          showChartEl.removeChild(showChartEl.firstChild);
-          showChartEl.removeChild(showChartEl.firstChild);
+          showChartEl.removeChild(showChartEl.children[0]);
+          showChartEl.removeChild(showChartEl.children[0]);
+          showChartEl.removeChild(showChartEl.children[0]);
+
+          // showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.firstChild);
+          // showChartEl.removeChild(showChartEl.firstChild);
           // showChartEl.removeChild(showChartEl.children[1]);
           showChart(tradeValue, showChartEl);
         }
@@ -160,12 +171,14 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
 
 function showChart(tradeValue, showChartEl) {
   const chartEl = document.createElement("div");
-  const inputEl = getInputTag(tradeValue);
+  // const precisionEl = document.getElementById("showPrecision")
+  const { inputEl, lableEl } = getInputTag(tradeValue);
   chartEl.classList.add("chartCard");
   chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
   chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
 
   showChartEl.appendChild(chartEl);
+  showChartEl.appendChild(lableEl);
   showChartEl.appendChild(inputEl);
 
   fetchTradeChart(`${tradeValue.name}`, tradeValue.id, 1);
@@ -174,16 +187,23 @@ function showChart(tradeValue, showChartEl) {
 
 function getInputTag(tradeValue) {
   const inputEl = document.createElement("input");
+  const lableEl = document.createElement("lable");
+  inputEl.setAttribute("name", "precision");
+  lableEl.setAttribute("for", "precision");
+
+  lableEl.innerText = "Precision";
+  lableEl.classList.add("precisionLable");
 
   inputEl.addEventListener("change", (e) => {
     // console.log(e.target.value);
+
     fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value);
   });
 
   // inputEl.innerHTML = '<input class = "showChart--input" type= "text" />';
   inputEl.classList.add("showChart--input");
 
-  return inputEl;
+  return { inputEl, lableEl };
 }
 
 function makeChart(tradeID, xLables, tradePair, chartData) {
