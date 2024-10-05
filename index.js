@@ -40,7 +40,9 @@ async function fetchTradeChart(tradePair, tradeID) {
     throw new Error("http request faild");
   } else {
     const data = await res.json();
-    const xLables = [...Array(32).keys()].slice(1);
+    const xLables = data.map((item) => {
+      return moment(item.time).format("YYYY/MM/DD");
+    });
     const chartData = data.map((item) => {
       return { x: moment(item.time).format("D"), y: item.volume };
     });
@@ -59,7 +61,21 @@ async function fetchTradeChart(tradePair, tradeID) {
           },
         ],
       },
-      options: {},
+      options: {
+        scales: {
+          xAxes: [
+            {
+              // position: "top",
+              ticks: {
+                padding: 10,
+                // callback: function (value, index, ticks) {
+                //   return "    " + value + "   ";
+                // },
+              },
+            },
+          ],
+        },
+      },
     });
 
     // console.log(data);
