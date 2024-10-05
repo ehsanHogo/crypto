@@ -59,10 +59,11 @@ async function fetchData() {
             </div>
 
             </div>
-
+        <div class  = "pricePart">
             <div class="pairPrice"><span class = "priceReport">Min Price : </span> ${tradeValue.min_price}$</div>
             <div class="pairPrice"> <span class = "priceReport">Max Price : </span> ${tradeValue.max_price}$</div>
           </div>
+            </div>
         </button>
         `;
 

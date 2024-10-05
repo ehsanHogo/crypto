@@ -47,7 +47,7 @@ body {
 }
 
 .coinLogo {
-  width: 50%;
+  /* width: 50%; */
 
   display: flex;
   justify-content: end;
@@ -63,7 +63,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   column-width: 50%;
   gap: 1rem;
-  height: 100vh;
+  height: 50vh;
   width: 100%;
   overflow-x: auto;
 }
@@ -77,7 +77,7 @@ body {
 
 .tradeTable {
   margin-top: 5rem;
-  height: 100vh;
+  height: 50vh;
   overflow: auto;
 }
 
@@ -88,7 +88,7 @@ body {
 
   border-radius: 20px;
 
-  margin: 1rem;
+  margin: 0.5rem;
 }
 .tradeCard {
   display: flex;
@@ -165,6 +165,11 @@ body {
   margin-top: 0.5rem;
 }
 
+.pricePart {
+  display: flex;
+  gap: 2rem;
+}
+
 @media screen and (min-width: 200px) {
   .pairCard {
     display: flex;
@@ -206,13 +211,17 @@ body {
 @media screen and (min-width: 370px) {
   .coinsPart {
     width: initial;
-    gap: 1rem;
+    gap: 5rem;
     display: flex;
     flex-direction: row;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 }
 @media screen and (min-width: 700px) {
+  .tradeTable {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
   .showCoins {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -222,14 +231,14 @@ body {
 
   .tradeCard {
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
     margin: 0.5rem;
 
-    gap: 3rem;
+    gap: 2rem;
   }
 
   .coinsPart {
-    flex-direction: row;
+    gap: 3rem;
   }
 
   .coinLogo {
@@ -250,11 +259,26 @@ body {
 
     margin: 0.5rem;
 
-    gap: 5rem;
+    gap: 3rem;
   }
 
   .pairCard {
     display: flex;
     justify-content: space-between;
+  }
+
+  .coinsPart {
+    margin-bottom: 0rem;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .tradeTable {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+
+  .coinsPart {
+    margin-bottom: 0rem;
   }
 }
