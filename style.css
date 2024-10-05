@@ -8,10 +8,15 @@
 }
 
 body {
-  width: 100%;
+  /* width: 100px;
+  height: 100px; */
 
-  background-color: #e9e6e681;
+  /* background-color: #000000dd; */
   padding: 3rem;
+
+  background-image: url("./assets/cr.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 ::-webkit-scrollbar {
@@ -27,6 +32,15 @@ body {
   border: 6px solid transparent;
   background-clip: content-box;
 }
+
+canvas {
+  background-color: #c0c0c0;
+  width: 100%;
+  max-width: 700px;
+
+  border-radius: 10px;
+  margin-top: 2rem;
+}
 /* Show Coins */
 
 .coinCard {
@@ -36,7 +50,8 @@ body {
 
   justify-content: center;
   align-items: center;
-  background-color: rgb(127, 197, 255);
+  background-color: #ffff00;
+  /* background-color: rgb(127, 197, 255); */
   padding: 1rem 2rem;
   border-radius: 10px;
 }
@@ -71,6 +86,7 @@ body {
 .coinsList {
   padding-bottom: 1rem;
   text-align: center;
+  color: white;
 }
 
 /* Show Trades */
@@ -82,7 +98,8 @@ body {
 }
 
 .pairCard {
-  background-color: rgb(127, 197, 255);
+  background-color: #ffff00;
+  /* background-color: rgb(127, 197, 255); */
 
   padding: 1rem;
 
@@ -155,6 +172,7 @@ body {
 .tradeList {
   padding: 1rem 0;
   text-align: center;
+  color: white;
 }
 
 /* chart card */

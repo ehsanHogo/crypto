@@ -1,5 +1,17 @@
 // Show coins and trades
 
+const plugin = {
+  id: "customCanvasBackgroundColor",
+  beforeDraw: (chart, args, options) => {
+    const { ctx } = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.fillStyle = options.color || "#99ffff";
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  },
+};
+
 async function fetchData() {
   const coinsTableEl = document.getElementById("CoinsTable");
   const tradeTableEl = document.getElementById("TradeTable");
@@ -151,7 +163,7 @@ function showChart(tradeValue, showChartEl) {
   const inputEl = getInputTag(tradeValue);
   chartEl.classList.add("chartCard");
   chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
-  chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
+  chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
 
   showChartEl.appendChild(chartEl);
   showChartEl.appendChild(inputEl);
@@ -186,10 +198,17 @@ function makeChart(tradeID, xLables, tradePair, chartData) {
           pointRadius: 2,
           pointBackgroundColor: "rgba(0,0,255,1)",
           data: chartData,
+          fill: true,
+          backgroundColor: "rgb(54, 162, 235)",
         },
       ],
     },
     options: {
+      // plugins: {
+      //   customCanvasBackgroundColor: {
+      //     color: "white",
+      //   },
+      // },
       scales: {
         xAxes: [
           {
