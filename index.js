@@ -18,7 +18,6 @@ async function fetchData() {
   const showChartEl = document.getElementById("ShowChart");
 
   showChartEl.setAttribute("hideChart", "");
-  // const bodyEl = document.querySelector("body");
 
   let filteredTrades = [];
   let filteredCoins = [];
@@ -44,7 +43,6 @@ fetchData();
 //Show Chart for trade
 
 async function fetchTradeChart(tradePair, tradeID, precision) {
-  // console.log("precision : ", precision);s
   const res = await fetch(
     `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
   );
@@ -57,8 +55,6 @@ async function fetchTradeChart(tradePair, tradeID, precision) {
     const chartData = getChartData(data, precision);
 
     makeChart(tradeID, xLables, tradePair, chartData);
-
-    // console.log(data);
   }
 }
 
@@ -97,7 +93,6 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
   for (const trade in filteredTrades) {
     const tradeCardEl = document.createElement("div");
     tradeCardEl.classList.add("pairCard");
-    // tradeCardEl.setAttribute("hideChart", "");
 
     const tradeValue = filteredTrades[trade];
     const { logo1, logo2 } = findLogo(
@@ -106,7 +101,6 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
       tradeValue.pair_2
     );
 
-    // console.log(tradeValue);
     tradeCardEl.innerHTML = `
       <button class="tradeButtom" key="${tradeValue.id}" name="tradeCard${tradeValue.id}">
         <div class="pairName">${tradeValue.name}</div>
@@ -138,34 +132,19 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
         showChart(tradeValue, showChartEl);
       } else {
         const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
-        // chartEl.remove();
+
         const precisionEl = document.getElementById("showPrecision");
         if (chartEl) {
           precisionEl.removeChild(precisionEl.children[0]);
           precisionEl.removeChild(precisionEl.children[0]);
           showChartEl.removeChild(showChartEl.children[1]);
-          // showChartEl.removeChild(showChartEl.children[0]);
-          // showChartEl.removeChild(showChartEl.children[0]);
-          // showChartEl.removeChild(showChartEl.children[0]);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.children[0]);
-          // showChartEl.removeChild(showChartEl.children[1]);
+
           showChartEl.setAttribute("hideChart", "");
         } else {
           precisionEl.removeChild(precisionEl.children[0]);
           precisionEl.removeChild(precisionEl.children[0]);
           showChartEl.removeChild(showChartEl.children[1]);
-          // showChartEl.children[0].removeChild(showChartEl.children[0]);
-          // showChartEl.removeChild(showChartEl.children[0]);
 
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.firstChild);
-          // showChartEl.removeChild(showChartEl.children[1]);
           showChart(tradeValue, showChartEl);
         }
       }
@@ -197,16 +176,13 @@ function getInputTag(tradeValue) {
   inputEl.setAttribute("name", "precision");
   lableEl.setAttribute("for", "precision");
 
-  lableEl.innerText = "Precision";
+  lableEl.innerText = "Precision ( day )";
   lableEl.classList.add("precisionLable");
 
   inputEl.addEventListener("change", (e) => {
-    // console.log(e.target.value);
-
     fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value);
   });
 
-  // inputEl.innerHTML = '<input class = "showChart--input" type= "text" />';
   inputEl.classList.add("showChart--input");
 
   return { inputEl, lableEl };
@@ -230,20 +206,11 @@ function makeChart(tradeID, xLables, tradePair, chartData) {
       ],
     },
     options: {
-      // plugins: {
-      //   customCanvasBackgroundColor: {
-      //     color: "white",
-      //   },
-      // },
       scales: {
         xAxes: [
           {
-            // position: "top",
             ticks: {
               padding: 10,
-              // callback: function (value, index, ticks) {
-              //   return "    " + value + "   ";
-              // },
             },
           },
         ],
@@ -278,7 +245,6 @@ function getChartData(data, precision) {
         tempYvalue += data[index].volume;
         count++;
       } else if (count === precision - 1) {
-        // console.log("here");
         tempYvalue += data[index].volume;
         newData.push({
           x: moment(data[index].time).format("YYYY/MM/DD"),
@@ -298,8 +264,6 @@ function getChartData(data, precision) {
       };
     });
   }
-
-  // console.log(newData);
 
   return newData;
 }

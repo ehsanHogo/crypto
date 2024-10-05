@@ -8,10 +8,6 @@
 }
 
 body {
-  /* width: 100px;
-  height: 100px; */
-
-  /* background-color: #000000dd; */
   padding: 3rem;
 
   background-image: url("./assets/cr.jpg");
@@ -30,14 +26,13 @@ body {
   background-color: #d6dee1;
   border-radius: 20px;
   border: 6px solid transparent;
-  /* background-clip: content-box; */
 }
 
 canvas {
   display: block;
   background-color: #c0c0c0;
-  /* width: 100%; */
-  max-width: 700px;
+  /* min-width: 200px; */
+  /* width: 750px; */
 
   border-radius: 10px;
   margin-top: 2rem;
@@ -52,7 +47,7 @@ canvas {
   justify-content: center;
   align-items: center;
   background-color: #ffff00;
-  /* background-color: rgb(127, 197, 255); */
+
   padding: 1rem 2rem;
   border-radius: 10px;
 }
@@ -63,8 +58,6 @@ canvas {
 }
 
 .coinLogo {
-  /* width: 50%; */
-
   display: flex;
   justify-content: end;
 }
@@ -74,7 +67,6 @@ canvas {
 }
 
 .showCoins {
-  /* padding: 0.5rem; */
   border: 1px #ffff00 solid;
   border-radius: 10px;
   padding: 2rem;
@@ -106,9 +98,8 @@ canvas {
 
 .pairCard {
   background-color: #ffff00;
-  /* background-color: rgb(127, 197, 255); */
 
-  padding: 1rem;
+  padding: 0.5rem;
 
   border-radius: 20px;
 
@@ -119,7 +110,7 @@ canvas {
 
   margin: 0.5rem;
 
-  gap: 8rem;
+  /* gap: 0rem; */
 }
 
 .tradeButtom {
@@ -177,7 +168,6 @@ canvas {
 }
 
 .tradeList {
-  /* padding: 1rem 0 0 0; */
   margin-top: 2rem;
   text-align: center;
   color: white;
@@ -199,11 +189,10 @@ canvas {
 /* input */
 
 .showChart--input {
-  /* display: inline; */
   width: min-content;
   background-color: #c0c0c0;
   border: none;
-  /* outline: none; */
+
   border-radius: 10px;
   height: 40px;
   width: 80px;
@@ -215,19 +204,14 @@ canvas {
   margin-right: 0.5rem;
   margin-top: 1rem;
   font-weight: bold;
-  /* text-align: center;  */
 }
 
 .showChart {
-  /* display: grid;
-  grid-template-columns: 1fr 1fr; */
   margin: 2rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  align-items: center; */
-  /* gap: 2rem; */
-  /* flex-direction: column; */
+
+  align-items: center;
 }
 
 @media screen and (min-width: 200px) {
@@ -266,9 +250,16 @@ canvas {
   .pairPrice {
     width: initial;
   }
+
+  /* canvas {
+    width: 200px;
+  } */
 }
 
 @media screen and (min-width: 370px) {
+  canvas {
+    width: 400px;
+  }
   .coinsPart {
     width: initial;
     gap: 5rem;
@@ -278,6 +269,9 @@ canvas {
   }
 }
 @media screen and (min-width: 700px) {
+  canvas {
+    width: 600px;
+  }
   .tradeTable {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -307,6 +301,9 @@ canvas {
 }
 
 @media screen and (min-width: 880px) {
+  canvas {
+    width: 750px;
+  }
   .showCoins {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -319,7 +316,7 @@ canvas {
 
     margin: 0.5rem;
 
-    gap: 3rem;
+    column-gap: 3rem;
   }
 
   .pairCard {
