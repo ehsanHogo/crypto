@@ -139,10 +139,14 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
       } else {
         const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
         // chartEl.remove();
+        const precisionEl = document.getElementById("showPrecision");
         if (chartEl) {
-          showChartEl.removeChild(showChartEl.children[0]);
-          showChartEl.removeChild(showChartEl.children[0]);
-          showChartEl.removeChild(showChartEl.children[0]);
+          precisionEl.removeChild(precisionEl.children[0]);
+          precisionEl.removeChild(precisionEl.children[0]);
+          showChartEl.removeChild(showChartEl.children[1]);
+          // showChartEl.removeChild(showChartEl.children[0]);
+          // showChartEl.removeChild(showChartEl.children[0]);
+          // showChartEl.removeChild(showChartEl.children[0]);
           // showChartEl.removeChild(showChartEl.firstChild);
           // showChartEl.removeChild(showChartEl.firstChild);
           // showChartEl.removeChild(showChartEl.firstChild);
@@ -151,9 +155,11 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
           // showChartEl.removeChild(showChartEl.children[1]);
           showChartEl.setAttribute("hideChart", "");
         } else {
-          showChartEl.removeChild(showChartEl.children[0]);
-          showChartEl.removeChild(showChartEl.children[0]);
-          showChartEl.removeChild(showChartEl.children[0]);
+          precisionEl.removeChild(precisionEl.children[0]);
+          precisionEl.removeChild(precisionEl.children[0]);
+          showChartEl.removeChild(showChartEl.children[1]);
+          // showChartEl.children[0].removeChild(showChartEl.children[0]);
+          // showChartEl.removeChild(showChartEl.children[0]);
 
           // showChartEl.removeChild(showChartEl.firstChild);
           // showChartEl.removeChild(showChartEl.firstChild);
@@ -171,15 +177,15 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
 
 function showChart(tradeValue, showChartEl) {
   const chartEl = document.createElement("div");
-  // const precisionEl = document.getElementById("showPrecision")
+  const precisionEl = document.getElementById("showPrecision");
   const { inputEl, lableEl } = getInputTag(tradeValue);
   chartEl.classList.add("chartCard");
   chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
   chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
 
   showChartEl.appendChild(chartEl);
-  showChartEl.appendChild(lableEl);
-  showChartEl.appendChild(inputEl);
+  precisionEl.appendChild(lableEl);
+  precisionEl.appendChild(inputEl);
 
   fetchTradeChart(`${tradeValue.name}`, tradeValue.id, 1);
   showChartEl.removeAttribute("hideChart");

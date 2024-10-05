@@ -212,14 +212,19 @@ canvas {
 
 .precisionLable {
   color: white;
-  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
   margin-top: 1rem;
+  font-weight: bold;
   /* text-align: center;  */
 }
 
 .showChart {
-  /* display: flex; */
-  /* justify-content: center;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
   align-items: center; */
   /* gap: 2rem; */
   /* flex-direction: column; */
