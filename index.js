@@ -3,6 +3,10 @@
 async function fetchData() {
   const coinsTableEl = document.getElementById("CoinsTable");
   const tradeTableEl = document.getElementById("TradeTable");
+  const showChartEl = document.getElementById("ShowChart");
+
+  showChartEl.setAttribute("hideChart", "");
+  // const bodyEl = document.querySelector("body");
 
   let filteredTrades = [];
   let filteredCoins = [];
@@ -18,7 +22,7 @@ async function fetchData() {
 
     showCoins(filteredCoins, coinsTableEl);
 
-    showTrades(filteredTrades, tradeTableEl, data);
+    showTrades(filteredTrades, tradeTableEl, data, showChartEl);
   } catch (e) {
     console.log(e);
   }
@@ -93,18 +97,20 @@ function showCoins(filteredCoins, coinsTableEl) {
   }
 }
 
-function showTrades(filteredTrades, tradeTableEl, data) {
+function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
   for (const trade in filteredTrades) {
     const tradeCardEl = document.createElement("div");
     tradeCardEl.classList.add("pairCard");
-    tradeCardEl.setAttribute("hideChart", "");
+    // tradeCardEl.setAttribute("hideChart", "");
 
     const tradeValue = filteredTrades[trade];
     const { logo1, logo2 } = findLogo(
       data,
-      tradeValue.name.split("-")[0],
-      tradeValue.name.split("-")[1]
+      tradeValue.pair_base,
+      tradeValue.pair_2
     );
+
+    console.log(tradeValue);
     tradeCardEl.innerHTML = `
       <button class="tradeButtom" key="${tradeValue.id}" name=         "tradeCard${tradeValue.id}">
         <div class="pairName">${tradeValue.name}</div>
@@ -132,22 +138,32 @@ function showTrades(filteredTrades, tradeTableEl, data) {
       `;
 
     tradeCardEl.addEventListener("click", () => {
-      if (tradeCardEl.hasAttribute("hideChart")) {
-        fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
-        const chartEl = document.createElement("div");
-        chartEl.classList.add("chartCard");
-        chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
-        chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
-
-        tradeCardEl.appendChild(chartEl);
-        tradeCardEl.removeAttribute("hideChart");
+      if (showChartEl.hasAttribute("hideChart")) {
+        showChart(tradeValue, showChartEl);
       } else {
         const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
-        chartEl.remove();
-        tradeCardEl.setAttribute("hideChart", "");
+        // chartEl.remove();
+        if (chartEl) {
+          showChartEl.removeChild(chartEl);
+          showChartEl.setAttribute("hideChart", "");
+        } else {
+          showChartEl.removeChild(showChartEl.children[0]);
+          showChart(tradeValue, showChartEl);
+        }
       }
     });
 
     tradeTableEl.appendChild(tradeCardEl);
   }
+}
+
+function showChart(tradeValue, showChartEl) {
+  const chartEl = document.createElement("div");
+  chartEl.classList.add("chartCard");
+  chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
+  chartEl.innerHTML = `    <canvas id="myChart${tradeValue.id}" style="width: 100%; max-width: 700px"></canvas>`;
+
+  showChartEl.appendChild(chartEl);
+  fetchTradeChart(`${tradeValue.name}`, tradeValue.id);
+  showChartEl.removeAttribute("hideChart");
 }
