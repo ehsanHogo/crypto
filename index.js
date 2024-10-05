@@ -1,17 +1,5 @@
 // Show coins and trades
 
-const plugin = {
-  id: "customCanvasBackgroundColor",
-  beforeDraw: (chart, args, options) => {
-    const { ctx } = chart;
-    ctx.save();
-    ctx.globalCompositeOperation = "destination-over";
-    ctx.fillStyle = options.color || "#99ffff";
-    ctx.fillRect(0, 0, chart.width, chart.height);
-    ctx.restore();
-  },
-};
-
 async function fetchData() {
   const coinsTableEl = document.getElementById("CoinsTable");
   const tradeTableEl = document.getElementById("TradeTable");
@@ -51,7 +39,7 @@ async function fetchTradeChart(tradePair, tradeID, precision) {
     throw new Error("http request faild");
   } else {
     const data = await res.json();
-    const xLables = getXaxislables(data, precision);
+    const xLables = getXaxisLables(data, precision);
     const chartData = getChartData(data, precision);
 
     makeChart(tradeID, xLables, tradePair, chartData);
@@ -157,7 +145,7 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
 function showChart(tradeValue, showChartEl) {
   const chartEl = document.createElement("div");
   const precisionEl = document.getElementById("showPrecision");
-  const { inputEl, lableEl } = getInputTag(tradeValue);
+  const { inputEl, lableEl } = getInputLableTag(tradeValue);
   chartEl.classList.add("chartCard");
   chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
   chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
@@ -170,7 +158,7 @@ function showChart(tradeValue, showChartEl) {
   showChartEl.removeAttribute("hideChart");
 }
 
-function getInputTag(tradeValue) {
+function getInputLableTag(tradeValue) {
   const inputEl = document.createElement("input");
   const lableEl = document.createElement("lable");
   inputEl.setAttribute("name", "precision");
@@ -219,7 +207,7 @@ function makeChart(tradeID, xLables, tradePair, chartData) {
   });
 }
 
-function getXaxislables(data, precision) {
+function getXaxisLables(data, precision) {
   return data
     .filter((item, index) => {
       return (index + 1) % precision === 0;
