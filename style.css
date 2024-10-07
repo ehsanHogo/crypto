@@ -39,7 +39,7 @@ canvas {
 }
 /* Show Coins */
 
-.coinCard {
+.coin-card {
   width: 100%;
 
   display: flex;
@@ -52,17 +52,17 @@ canvas {
   border-radius: 10px;
 }
 
-.coinName {
+.coin-card__coin-name {
   width: 50%;
   text-wrap: nowrap;
 }
 
-.coinLogo {
+.coin-logo {
   display: flex;
   justify-content: end;
 }
 
-.logoPic {
+.logo-pic {
   width: 25%;
 }
 
@@ -96,7 +96,7 @@ canvas {
   overflow: auto;
 }
 
-.pairCard {
+.pair-card {
   background-color: #ffff00;
 
   padding: 0.5rem;
@@ -105,7 +105,7 @@ canvas {
 
   margin: 0.5rem;
 }
-.tradeCard {
+.trade-properties {
   display: flex;
 
   margin: 0.5rem;
@@ -113,40 +113,40 @@ canvas {
   /* gap: 0rem; */
 }
 
-.tradeButtom {
+.pair-card__button {
   background: none repeat scroll 0 0 transparent;
   border: none;
   width: inherit;
 }
-
+/* 
 .pricesPart {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.coinsPart {
+} */
+.trade-properties__coins {
   display: flex;
   justify-content: space-between;
   width: 50%;
   gap: 5rem;
 }
 
-.priceReport {
+.trade-properties__price-report {
   text-wrap: nowrap;
 }
-.pairOne {
+.trade-properties__show-coin {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.pairTwo {
+/* .trade-properties__show-coin {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
+} */
 
-.pairPrice {
+.trade-properties__show-price {
   width: 25%;
 
   display: flex;
@@ -154,13 +154,13 @@ canvas {
   align-items: center;
 }
 
-.pairName {
+.trade-properties__coin-name {
   padding-bottom: 1rem;
 
   font-weight: bolder;
 }
 
-.coinLogo {
+.coin-logo {
   max-width: 200px;
 
   display: flex;
@@ -175,20 +175,20 @@ canvas {
 
 /* chart card */
 
-.chartCard {
+.chart-card {
   display: flex;
   justify-content: center;
   margin-top: 0.5rem;
 }
 
-.pricePart {
+.trade-properties__prices {
   display: flex;
   gap: 2rem;
 }
 
 /* input */
 
-.show-chart--input {
+.show-chart__input {
   width: min-content;
   background-color: #c0c0c0;
   border: none;
@@ -199,7 +199,7 @@ canvas {
   padding: 1rem;
 }
 
-.precisionLable {
+.show-chart__precision-lable {
   color: white;
   margin-right: 0.5rem;
   margin-top: 1rem;
@@ -215,7 +215,7 @@ canvas {
 }
 
 @media screen and (min-width: 200px) {
-  .pairCard {
+  .pair-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -227,7 +227,7 @@ canvas {
     gap: 1rem;
   }
 
-  .tradeCard {
+  .trade-properties {
     display: flex;
     flex-direction: column;
     margin: 0.5rem;
@@ -236,18 +236,18 @@ canvas {
     overflow: hidden;
   }
 
-  .coinLogo {
+  .coin-logo {
     min-width: 50px;
     max-width: 100px;
   }
 
-  .coinsPart {
+  .trade-properties__coins {
     width: initial;
     gap: 1rem;
     display: flex;
     flex-direction: column;
   }
-  .pairPrice {
+  .trade-properties__show-price {
     width: initial;
   }
 
@@ -260,7 +260,7 @@ canvas {
   canvas {
     width: 400px;
   }
-  .coinsPart {
+  .trade-properties__coins {
     width: initial;
     gap: 5rem;
     display: flex;
@@ -283,7 +283,7 @@ canvas {
     gap: 1rem;
   }
 
-  .tradeCard {
+  .trade-properties {
     display: flex;
     /* flex-direction: row; */
     margin: 0.5rem;
@@ -291,11 +291,11 @@ canvas {
     gap: 2rem;
   }
 
-  .coinsPart {
+  .trade-properties__coins {
     gap: 3rem;
   }
 
-  .coinLogo {
+  .coin-logo {
     max-width: 150px;
   }
 }
@@ -311,7 +311,7 @@ canvas {
     gap: 1rem;
   }
 
-  .tradeCard {
+  .trade-properties {
     display: flex;
 
     margin: 0.5rem;
@@ -319,12 +319,12 @@ canvas {
     column-gap: 3rem;
   }
 
-  .pairCard {
+  .pair-card {
     display: flex;
     justify-content: space-between;
   }
 
-  .coinsPart {
+  .trade-properties__coins {
     margin-bottom: 0rem;
   }
 }
@@ -335,7 +335,7 @@ canvas {
     grid-template-columns: 50% 50%;
   }
 
-  .coinsPart {
+  .trade-properties__coins {
     margin-bottom: 0rem;
   }
 }

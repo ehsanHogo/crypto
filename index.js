@@ -66,10 +66,10 @@ function showCoins(filteredCoins, coinsTableEl) {
     const coinCardEl = document.createElement("div");
     const coinValue = filteredCoins[coin];
     coinCardEl.innerHTML = `     
-       <div class="coinCard">
-        <div class="coinName">${coinValue.fullname}</div>
-        <div class="coinLogo">
-          <img class="logoPic" src="${coinValue.logo}" alt="${coinValue.fullname}" />
+       <div class="coin-card">
+        <div class="coin-card__coin-name">${coinValue.fullname}</div>
+        <div class="coin-logo">
+          <img class="logo-pic" src="${coinValue.logo}" alt="${coinValue.fullname}" />
         </div>
       </div>`;
 
@@ -80,7 +80,7 @@ function showCoins(filteredCoins, coinsTableEl) {
 function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
   for (const trade in filteredTrades) {
     const tradeCardEl = document.createElement("div");
-    tradeCardEl.classList.add("pairCard");
+    tradeCardEl.classList.add("pair-card");
 
     const tradeValue = filteredTrades[trade];
     const { logo1, logo2 } = findLogo(
@@ -90,26 +90,26 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
     );
 
     tradeCardEl.innerHTML = `
-      <button class="tradeButtom" key="${tradeValue.id}" name="tradeCard${tradeValue.id}">
-        <div class="pairName">${tradeValue.name}</div>
-        <div class="tradeCard">
+      <button class="pair-card__button" key="${tradeValue.id}" name="tradeCard${tradeValue.id}">
+        <div class="trade-properties__coin-name">${tradeValue.name}</div>
+        <div class="trade-properties">
 
-        <div class = "coinsPart">
-          <div class="pairOne">
-            <img class="coinLogo" src="${logo1}" alt="logo" />
+        <div class = "trade-properties__coins">
+          <div class="trade-properties__show-coin">
+            <img class="coin-logo" src="${logo1}" alt="logo" />
             <p>${tradeValue.pair_base}</p>
           </div>
 
-          <div class="pairTwo">
-            <img class="coinLogo" src="${logo2}" alt="logo" />
+          <div class="trade-properties__show-coin">
+            <img class="coin-logo" src="${logo2}" alt="logo" />
 
             <p>${tradeValue.pair_2}</p>
           </div>
 
           </div>
-      <div class  = "pricePart">
-          <div class="pairPrice"><span class = "priceReport">Min Price : </span> ${tradeValue.min_price}$</div>
-          <div class="pairPrice"> <span class = "priceReport">Max Price : </span> ${tradeValue.max_price}$</div>
+      <div class  = "trade-properties__prices">
+          <div class="trade-properties__show-price"><span class = "trade-properties__price-report">Min Price : </span> ${tradeValue.min_price}$</div>
+          <div class="trade-properties__show-price"> <span class = "trade-properties__price-report">Max Price : </span> ${tradeValue.max_price}$</div>
         </div>
           </div>
       </button>
@@ -146,7 +146,7 @@ function showChart(tradeValue, showChartEl) {
   const chartEl = document.createElement("div");
   const precisionEl = document.getElementById("showPrecision");
   const { inputEl, lableEl } = getInputLableTag(tradeValue);
-  chartEl.classList.add("chartCard");
+  chartEl.classList.add("chart-card");
   chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
   chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
 
@@ -165,13 +165,13 @@ function getInputLableTag(tradeValue) {
   lableEl.setAttribute("for", "precision");
 
   lableEl.innerText = "Precision ( day )";
-  lableEl.classList.add("precisionLable");
+  lableEl.classList.add("show-chart__precision-lable");
 
   inputEl.addEventListener("change", (e) => {
     fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value);
   });
 
-  inputEl.classList.add("show-chart--input");
+  inputEl.classList.add("show-chart__input");
 
   return { inputEl, lableEl };
 }
