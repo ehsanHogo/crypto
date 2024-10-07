@@ -186,10 +186,10 @@ function makeChart(tradeID, xLables, tradePair, chartData) {
           label: `${tradePair}`,
 
           pointRadius: 2,
-          pointBackgroundColor: "rgba(0,0,255,1)",
+          pointBackgroundColor: "rgba(0,0,0,1)",
           data: chartData,
           fill: true,
-          backgroundColor: "rgb(54, 162, 235)",
+          backgroundColor: "rgba(0, 0, 254, 0.8)",
         },
       ],
     },
