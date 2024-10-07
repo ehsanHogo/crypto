@@ -262,7 +262,7 @@ canvas {
   }
   .trade-properties__coins {
     width: initial;
-    gap: 5rem;
+    gap: 1rem;
     display: flex;
     flex-direction: row;
     margin-bottom: 0.5rem;
@@ -292,7 +292,7 @@ canvas {
   }
 
   .trade-properties__coins {
-    gap: 3rem;
+    gap: 5rem;
   }
 
   .coin-logo {
@@ -326,6 +326,7 @@ canvas {
 
   .trade-properties__coins {
     margin-bottom: 0rem;
+    /* gap: 5rem; */
   }
 }
 
