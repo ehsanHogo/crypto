@@ -171,7 +171,7 @@ function getInputLableTag(tradeValue) {
     fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value);
   });
 
-  inputEl.classList.add("showChart--input");
+  inputEl.classList.add("show-chart--input");
 
   return { inputEl, lableEl };
 }

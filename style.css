@@ -87,7 +87,7 @@ canvas {
 
 /* Show Trades */
 
-.tradeTable {
+.trade-table {
   padding: 0.5rem;
   border: 1px #ffff00 solid;
   border-radius: 10px;
@@ -167,7 +167,7 @@ canvas {
   justify-content: end;
 }
 
-.tradeList {
+.trade-list {
   margin-top: 2rem;
   text-align: center;
   color: white;
@@ -188,7 +188,7 @@ canvas {
 
 /* input */
 
-.showChart--input {
+.show-chart--input {
   width: min-content;
   background-color: #c0c0c0;
   border: none;
@@ -206,7 +206,7 @@ canvas {
   font-weight: bold;
 }
 
-.showChart {
+.show-chart {
   margin: 2rem;
   display: flex;
   flex-direction: column;
@@ -272,7 +272,7 @@ canvas {
   canvas {
     width: 600px;
   }
-  .tradeTable {
+  .trade-table {
     display: grid;
     grid-template-columns: 50% 50%;
   }
@@ -330,7 +330,7 @@ canvas {
 }
 
 @media screen and (min-width: 1300px) {
-  .tradeTable {
+  .trade-table {
     display: grid;
     grid-template-columns: 50% 50%;
   }
