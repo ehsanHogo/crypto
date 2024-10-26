@@ -30,21 +30,56 @@ async function fetchData() {
 fetchData();
 //Show Chart for trade
 
-async function fetchTradeChart(tradePair, tradeID, precision) {
-  const res = await fetch(
-    `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
-  );
+const fetchTradeChart = (() => {
+  let lastChartData = null;
 
-  if (!res.ok) {
-    throw new Error("http request faild");
-  } else {
-    const data = await res.json();
-    const xLables = getXaxisLables(data, precision);
-    const chartData = getChartData(data, precision);
+  console.log(lastChartData);
 
-    makeChart(tradeID, xLables, tradePair, chartData);
-  }
-}
+  return async function (tradePair, tradeID, precision, newChart) {
+    if (newChart) {
+      console.log("in fetch Trade");
+      const res = await fetch(
+        `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
+      );
+
+      if (!res.ok) {
+        throw new Error("http request faild");
+      } else {
+        const data = await res.json();
+
+        lastChartData = data;
+
+        console.log("set last datat ", lastChartData);
+        const xLables = getXaxisLables(data, precision);
+        const chartData = getChartData(data, precision);
+
+        makeChart(tradeID, xLables, tradePair, chartData);
+      }
+    } else {
+      const xLables = getXaxisLables(lastChartData, precision);
+      const chartData = getChartData(lastChartData, precision);
+
+      makeChart(tradeID, xLables, tradePair, chartData);
+    }
+  };
+})();
+
+// async function fetchTradeChart(tradePair, tradeID, precision) {
+//   console.log("in fetch Trade");
+//   const res = await fetch(
+//     `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
+//   );
+
+//   if (!res.ok) {
+//     throw new Error("http request faild");
+//   } else {
+//     const data = await res.json();
+//     const xLables = getXaxisLables(data, precision);
+//     const chartData = getChartData(data, precision);
+
+//     makeChart(tradeID, xLables, tradePair, chartData);
+//   }
+// }
 
 function findLogo(data, pair1, pair2) {
   let logo1 = null;
@@ -122,6 +157,8 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
         const chartEl = document.getElementById(`TradeChart${tradeValue.id}`);
 
         const precisionEl = document.getElementById("showPrecision");
+
+        console.log("remove", showChartEl.children[1]);
         if (chartEl) {
           precisionEl.removeChild(precisionEl.children[0]);
           precisionEl.removeChild(precisionEl.children[0]);
@@ -131,6 +168,8 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
         } else {
           precisionEl.removeChild(precisionEl.children[0]);
           precisionEl.removeChild(precisionEl.children[0]);
+
+          console.log(showChartEl.children[1]);
           showChartEl.removeChild(showChartEl.children[1]);
 
           showChart(tradeValue, showChartEl);
@@ -142,19 +181,32 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
   }
 }
 
-function showChart(tradeValue, showChartEl) {
-  const chartEl = document.createElement("div");
+// const test = (() => {
+//   let count = 0;
+
+//   return function () {
+//     count++;
+//     console.log(count);
+//   };
+// })();
+
+async function showChart(tradeValue, showChartEl) {
+  console.log("in show chart");
   const precisionEl = document.getElementById("showPrecision");
   const { inputEl, lableEl } = getInputLableTag(tradeValue);
-  chartEl.classList.add("chart-card");
-  chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
-  chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
 
-  showChartEl.appendChild(chartEl);
+  // const chartEl = document.createElement("div");
+  // chartEl.classList.add("chart-card");
+  // chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
+  // chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
+
+  // showChartEl.appendChild(chartEl);
   precisionEl.appendChild(lableEl);
   precisionEl.appendChild(inputEl);
 
-  fetchTradeChart(`${tradeValue.name}`, tradeValue.id, 1);
+  await fetchTradeChart(`${tradeValue.name}`, tradeValue.id, 1, true);
+
+  // console.log("hete");
   showChartEl.removeAttribute("hideChart");
 }
 
@@ -168,7 +220,8 @@ function getInputLableTag(tradeValue) {
   lableEl.classList.add("show-chart__precision-lable");
 
   inputEl.addEventListener("change", (e) => {
-    fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value);
+    console.log("in inpute listener");
+    fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value, false);
   });
 
   inputEl.classList.add("show-chart__input");
@@ -177,6 +230,23 @@ function getInputLableTag(tradeValue) {
 }
 
 function makeChart(tradeID, xLables, tradePair, chartData) {
+  // test();
+  const showChartEl = document.getElementById("ShowChart");
+
+  const prevChart = document.getElementById(`TradeChart${tradeID}`);
+
+  // console.log();
+
+  if (prevChart) prevChart.remove();
+  const chartEl = document.createElement("div");
+  chartEl.classList.add("chart-card");
+  chartEl.setAttribute("id", `TradeChart${tradeID}`);
+  chartEl.innerHTML = ` <canvas id="myChart${tradeID}" ></canvas>`;
+
+  showChartEl.appendChild(chartEl);
+
+  console.log("in  make chart");
+
   new Chart(`myChart${tradeID}`, {
     type: "line",
     data: {
@@ -222,24 +292,25 @@ function getChartData(data, precision) {
 
   let tempYvalue = 0;
   let tempItem;
-  let count = 0;
+  // let count = 0;
   let newData = [];
 
-  console.log(count);
+  // console.log(count);
   console.log(newData);
   if (precision > 1) {
     for (let index = 0; index < data.length; index++) {
-      if (count < precision - 1) {
+      if (index % precision < precision - 1) {
         tempYvalue += data[index].volume;
-        count++;
-      } else if (count === precision - 1) {
+        // count++;
+      } else if (index % precision === precision - 1) {
         tempYvalue += data[index].volume;
         newData.push({
           x: moment(data[index].time).format("YYYY/MM/DD"),
           y: tempYvalue / precision,
         });
 
-        count = 0;
+        // count = 0;
+        // console.log(index);
 
         tempYvalue = 0;
       }
@@ -255,3 +326,5 @@ function getChartData(data, precision) {
 
   return newData;
 }
+
+console.log("refresh");
