@@ -64,23 +64,6 @@ const fetchTradeChart = (() => {
   };
 })();
 
-// async function fetchTradeChart(tradePair, tradeID, precision) {
-//   console.log("in fetch Trade");
-//   const res = await fetch(
-//     `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("http request faild");
-//   } else {
-//     const data = await res.json();
-//     const xLables = getXaxisLables(data, precision);
-//     const chartData = getChartData(data, precision);
-
-//     makeChart(tradeID, xLables, tradePair, chartData);
-//   }
-// }
-
 function findLogo(data, pair1, pair2) {
   let logo1 = null;
   let logo2 = null;
@@ -181,32 +164,16 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
   }
 }
 
-// const test = (() => {
-//   let count = 0;
-
-//   return function () {
-//     count++;
-//     console.log(count);
-//   };
-// })();
-
 async function showChart(tradeValue, showChartEl) {
   console.log("in show chart");
   const precisionEl = document.getElementById("showPrecision");
   const { inputEl, lableEl } = getInputLableTag(tradeValue);
 
-  // const chartEl = document.createElement("div");
-  // chartEl.classList.add("chart-card");
-  // chartEl.setAttribute("id", `TradeChart${tradeValue.id}`);
-  // chartEl.innerHTML = ` <canvas id="myChart${tradeValue.id}" ></canvas>`;
-
-  // showChartEl.appendChild(chartEl);
   precisionEl.appendChild(lableEl);
   precisionEl.appendChild(inputEl);
 
   await fetchTradeChart(`${tradeValue.name}`, tradeValue.id, 1, true);
 
-  // console.log("hete");
   showChartEl.removeAttribute("hideChart");
 }
 
@@ -221,7 +188,10 @@ function getInputLableTag(tradeValue) {
 
   inputEl.addEventListener("change", (e) => {
     console.log("in inpute listener");
-    fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value, false);
+    if (e.target.value === "") {
+      fetchTradeChart(tradeValue.name, tradeValue.id, 1, false);
+    } else
+      fetchTradeChart(tradeValue.name, tradeValue.id, +e.target.value, false);
   });
 
   inputEl.classList.add("show-chart__input");
@@ -230,12 +200,9 @@ function getInputLableTag(tradeValue) {
 }
 
 function makeChart(tradeID, xLables, tradePair, chartData) {
-  // test();
   const showChartEl = document.getElementById("ShowChart");
 
   const prevChart = document.getElementById(`TradeChart${tradeID}`);
-
-  // console.log();
 
   if (prevChart) prevChart.remove();
   const chartEl = document.createElement("div");
@@ -291,26 +258,20 @@ function getChartData(data, precision) {
   console.log(data);
 
   let tempYvalue = 0;
-  let tempItem;
-  // let count = 0;
+
   let newData = [];
 
-  // console.log(count);
   console.log(newData);
   if (precision > 1) {
     for (let index = 0; index < data.length; index++) {
       if (index % precision < precision - 1) {
         tempYvalue += data[index].volume;
-        // count++;
       } else if (index % precision === precision - 1) {
         tempYvalue += data[index].volume;
         newData.push({
           x: moment(data[index].time).format("YYYY/MM/DD"),
           y: tempYvalue / precision,
         });
-
-        // count = 0;
-        // console.log(index);
 
         tempYvalue = 0;
       }
