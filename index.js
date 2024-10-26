@@ -33,11 +33,8 @@ fetchData();
 const fetchTradeChart = (() => {
   let lastChartData = null;
 
-  console.log(lastChartData);
-
   return async function (tradePair, tradeID, precision, newChart) {
     if (newChart) {
-      console.log("in fetch Trade");
       const res = await fetch(
         `https://api.exir.io/v2/chart?symbol=${tradePair}&resolution=1D&from=1711917000&to=1714509000`
       );
@@ -49,7 +46,6 @@ const fetchTradeChart = (() => {
 
         lastChartData = data;
 
-        console.log("set last datat ", lastChartData);
         const xLables = getXaxisLables(data, precision);
         const chartData = getChartData(data, precision);
 
@@ -141,7 +137,6 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
 
         const precisionEl = document.getElementById("showPrecision");
 
-        console.log("remove", showChartEl.children[1]);
         if (chartEl) {
           precisionEl.removeChild(precisionEl.children[0]);
           precisionEl.removeChild(precisionEl.children[0]);
@@ -152,7 +147,6 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
           precisionEl.removeChild(precisionEl.children[0]);
           precisionEl.removeChild(precisionEl.children[0]);
 
-          console.log(showChartEl.children[1]);
           showChartEl.removeChild(showChartEl.children[1]);
 
           showChart(tradeValue, showChartEl);
@@ -165,7 +159,6 @@ function showTrades(filteredTrades, tradeTableEl, data, showChartEl) {
 }
 
 async function showChart(tradeValue, showChartEl) {
-  console.log("in show chart");
   const precisionEl = document.getElementById("showPrecision");
   const { inputEl, lableEl } = getInputLableTag(tradeValue);
 
@@ -187,7 +180,6 @@ function getInputLableTag(tradeValue) {
   lableEl.classList.add("show-chart__precision-lable");
 
   inputEl.addEventListener("change", (e) => {
-    console.log("in inpute listener");
     if (e.target.value === "") {
       fetchTradeChart(tradeValue.name, tradeValue.id, 1, false);
     } else
@@ -211,8 +203,6 @@ function makeChart(tradeID, xLables, tradePair, chartData) {
   chartEl.innerHTML = ` <canvas id="myChart${tradeID}" ></canvas>`;
 
   showChartEl.appendChild(chartEl);
-
-  console.log("in  make chart");
 
   new Chart(`myChart${tradeID}`, {
     type: "line",
@@ -255,13 +245,10 @@ function getXaxisLables(data, precision) {
 }
 
 function getChartData(data, precision) {
-  console.log(data);
-
   let tempYvalue = 0;
 
   let newData = [];
 
-  console.log(newData);
   if (precision > 1) {
     for (let index = 0; index < data.length; index++) {
       if (index % precision < precision - 1) {
@@ -287,5 +274,3 @@ function getChartData(data, precision) {
 
   return newData;
 }
-
-console.log("refresh");
